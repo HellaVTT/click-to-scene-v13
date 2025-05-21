@@ -1,0 +1,13 @@
+{
+  "name": "click-to-scene-v13",
+  "title": "Click-to-Scene Hotspots (v13)",
+  "description": "Use Drawings as click-hotspots to navigate between scenes in Foundry v13.",
+  "version": "1.0.0",
+  "author": "Hella",
+  "minimumCoreVersion": "0.8.9",
+  "compatibleCoreVersion": "1.0.0",
+  "scripts": ["scripts/main.js"],
+  "url": "https://github.com/HellaVTT/click-to-scene-v13",
+  "manifest": "https://raw.githubusercontent.com/HellaVTT/click-to-scene-v13/main/module.json",
+  "download": "https://github.com/HellaVTT/click-to-scene-v13/archive/refs/heads/main.zip"
+}

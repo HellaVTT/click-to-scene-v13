@@ -5,27 +5,28 @@ Hooks.once('init', () => {
 });
 
 Hooks.on('renderDrawingConfig', (app, html, data) => {
-  // Only proceed for actual Drawings
-  if ( app.object.document.documentName !== "Drawing" ) return;
+  if ( app.constructor.name !== "DrawingConfig" ) return;
 
-  // 1) Inject our new tab into the primary tab list
-  const nav = html.find(".tabs[data-group='primary']");
+  // 1) Tab button
+  const nav = html.find('header nav.tabs[data-group="primary"]');
+  if ( !nav.length ) return;
   nav.append(`
-    <li class="item" data-tab="click2scene">
+    <a class="item" data-tab="click2scene">
       <i class="fas fa-map-signs"></i> Hotspot
-    </li>
+    </a>
   `);
 
-  // 2) Append the content panel for our Hotspot tab
-  html.find(".sheet-body").append(`
-    <div class="tab click2scene" style="display:none; padding:10px;">
+  // 2) Panel content
+  const body = html.find('div.window-content');
+  body.append(`
+    <div class="tab click2scene" data-tab="click2scene" style="display:none; padding:10px;">
       <div class="form-group">
         <label>Target Scene</label>
         <select name="flags.click-to-scene-v13.targetScene">
           <option value="">— Select Scene —</option>
           ${game.scenes.map(s => `
             <option value="${s.id}"
-              ${app.object.document.getFlag('click-to-scene-v13','targetScene') === s.id ? 'selected' : ''}
+              ${app.object.document.getFlag('click-to-scene-v13','targetScene')===s.id?'selected':''}
             >${s.name}</option>
           `).join('')}
         </select>
@@ -33,17 +34,17 @@ Hooks.on('renderDrawingConfig', (app, html, data) => {
     </div>
   `);
 
-  // 3) Handle switching tabs (show/hide)
-  html.find('.tabs[data-group="primary"] li').on('click', ev => {
-    const tabId = $(ev.currentTarget).data('tab');
-    html.find('.tab').hide();
-    html.find(`.tab.${tabId}`).show();
-    html.find('.tabs[data-group="primary"] li').removeClass('active');
+  // 3) Tab switching
+  nav.find('a.item').on('click', ev => {
+    const tab = ev.currentTarget.dataset.tab;
+    body.find('.tab').hide();
+    body.find(`.tab.${tab}`).show();
+    nav.find('a.item').removeClass('active');
     $(ev.currentTarget).addClass('active');
   });
 
-  // 4) Activate the first tab (Appearance) by default
-  html.find('.tabs[data-group="primary"] li').first().click();
+  // 4) Activate Appearance tab first
+  nav.find('a.item').first().click();
 });
 
 Hooks.on('canvasReady', () => {

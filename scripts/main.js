@@ -5,6 +5,7 @@ Hooks.once('init', () => {
 });
 
 Hooks.on('getDrawingConfig', (drawing, config) => {
+  console.log('click-to-scene-v13 | getDrawingConfig called for', drawing.document.name);
   config.tabs.push({
     navSelector: '.sheet-body',
     title: 'Hotspot',
